@@ -10,16 +10,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Job extends Model
 {
     use HasFactory;
-    public function tag(string $name)
+
+    public function tag(string $name): void
     {
-        $tag = Tag::firstOrCreate(['name' => $name]); // Get the first record matching the attributes. If the record is not found, create it.
+        $tag = Tag::firstOrCreate(['name' => strtolower($name)]);
 
         $this->tags()->attach($tag);
     }
+
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
     }
+
     public function employer(): BelongsTo
     {
         return $this->belongsTo(Employer::class);
